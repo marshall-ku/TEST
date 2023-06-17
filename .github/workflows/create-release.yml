@@ -1,4 +1,4 @@
-name: Create release
+name: Create tag and release
 
 on:
     push:
@@ -20,4 +20,21 @@ jobs:
         needs: ["check-commit"]
         if: ${{ needs.check-commit.outputs.result != '' }}
         steps:
+            - uses: actions/checkout@v3
             - run: echo 'Hello there'
+            - name: Get version
+              id: get-version
+              run: echo "version=$(echo '${{ needs.check-commit.outputs.result }}' | grep -oP 'v\d+\.\d+\.\d+')" >> $GITHUB_OUTPUT
+              shell: bash
+            - name: Generate body
+              id: generate-body
+              run: echo "body=$(git log $(git describe --tags --abbrev=0)..HEAD --oneline)" >> "$GITHUB_OUTPUT"
+            - uses: rickstaa/action-create-tag@v1
+              with:
+                  tag: "latest"
+                  tag_exists_error: true
+                  message: ${{ steps.get-version.outputs.version }}
+            - uses: ncipollo/release-action@v1
+              with:
+                  name: ${{ steps.get-version.outputs.version }}
+                  body: ${{ steps.generate-body.outputs.body }}
