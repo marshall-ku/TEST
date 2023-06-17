@@ -34,7 +34,11 @@ jobs:
                   tag: "latest"
                   tag_exists_error: true
                   message: ${{ steps.get-version.outputs.version }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - uses: ncipollo/release-action@v1
               with:
                   name: ${{ steps.get-version.outputs.version }}
                   body: ${{ steps.generate-body.outputs.body }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
