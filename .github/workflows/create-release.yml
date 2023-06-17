@@ -13,7 +13,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - id: check
-              run: result=$(echo "${{ github.event.head_commit.message }}" | grep -oP '^Update version to v\d+\.\d+\.\d+$'); echo "result=$result" >> $GITHUB_OUTPUT
+              run: echo "result=$(echo '${{ github.event.head_commit.message }}' | grep -oP '^Update version to v\d+\.\d+\.\d+$')" >> $GITHUB_OUTPUT
+              shell: bash
     create-release:
         runs-on: ubuntu-latest
         needs: ["check-commit"]
