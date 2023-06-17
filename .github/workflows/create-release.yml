@@ -1,0 +1,13 @@
+name: Create release
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    create-release:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.commits[0].message =~ 'FOO' }}
+        steps:
+            - run: echo hi
