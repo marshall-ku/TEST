@@ -31,8 +31,9 @@ jobs:
             - name: Generate body
               id: generate-body
               run: |
-                  git_logs=$(git log $(git describe --tags --abbrev=0)..HEAD --oneline)
-                  echo -n "body=$(echo $git_logs | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+                  git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
+                  git_logs="${git_logs//$'\n'/$'\n'- }"
+                  echo -n "body=$git_logs" >> "$GITHUB_OUTPUT"
             - name: Create Release
               id: create_release
               uses: actions/create-release@latest
