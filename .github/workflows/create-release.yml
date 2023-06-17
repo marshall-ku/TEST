@@ -27,18 +27,7 @@ jobs:
         if: ${{ needs.check-commit.outputs.result != '' }}
         outputs:
             tag-exists: ${{ steps.create-tag.outputs.tag_exists }}
-        steps:
-            - uses: actions/checkout@v3
-            - uses: rickstaa/action-create-tag@v1
-              id: create-tag
-              with:
-                  tag: ${{ needs.check-commit.outputs.version }}
-                  tag_exists_error: true
-                  message: ${{ needs.check-commit.outputs.version }}
-    create-release:
-        runs-on: ubuntu-latest
-        needs: ["check-commit", "create-tag"]
-        if: ${{ (needs.check-commit.outputs.result != '') && (needs.create-tag.outputs.tag-exists == 'false') }}
+            release-body: ${{ steps.generate-body.outputs.body }}
         steps:
             - uses: actions/checkout@v3
               with:
@@ -55,12 +44,24 @@ jobs:
                       echo "$EOF"
                   } >>"$GITHUB_OUTPUT"
               shell: bash
+            - uses: rickstaa/action-create-tag@v1
+              id: create-tag
+              with:
+                  tag: ${{ needs.check-commit.outputs.version }}
+                  tag_exists_error: true
+                  message: ${{ needs.check-commit.outputs.version }}
+    create-release:
+        runs-on: ubuntu-latest
+        needs: ["check-commit", "create-tag"]
+        if: ${{ (needs.check-commit.outputs.result != '') && (needs.create-tag.outputs.tag-exists == 'false') }}
+        steps:
+            - uses: actions/checkout@v3
             - name: Create a GitHub release
               uses: ncipollo/release-action@v1
               with:
                   tag: ${{ needs.check-commit.outputs.version }}
                   name: ${{ needs.check-commit.outputs.version }}
-                  body: ${{ steps.generate-body.outputs.body }}
+                  body: ${{ needs.create-tag.outputs.release-body }}
     trigger-deploy:
         runs-on: ubuntu-latest
         needs: ["create-release"]
