@@ -6,8 +6,19 @@ on:
             - master
 
 jobs:
+    check-commit:
+        runs-on: ubuntu-latest
+        outputs:
+            result: ${{ steps.check.outputs.result }}
+        steps:
+            - uses: actions/checkout@v3
+            - id: check
+              run: |
+                  result=$(echo "${{ github.event.head_commit.message }}" | grep -oP '^Update version to v\d+\.\d+\.\d+$')
+                  echo "result=$result" >> $GITHUB_OUTPUT
     create-release:
         runs-on: ubuntu-latest
-        if: ${{ github.event.commits[0].message =~ 'FOO' }}
+        needs: ["check-commit"]
+        if: ${{ needs.check-commit.outputs.result != '' }}
         steps:
-            - run: echo hi
+            - run: echo 'Hello there'
