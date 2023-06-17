@@ -30,7 +30,7 @@ jobs:
               shell: bash
             - name: Generate body
               id: generate-body
-              run: echo -e "body=$(git log $(git describe --tags --abbrev=0)..HEAD --oneline)" >> "$GITHUB_OUTPUT"
+              run: echo -n "body=$(git log $(git describe --tags --abbrev=0)..HEAD --oneline)" >> "$GITHUB_OUTPUT"
             - name: Create Release
               id: create_release
               uses: actions/create-release@latest
