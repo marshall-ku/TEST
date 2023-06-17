@@ -36,7 +36,7 @@ jobs:
                   git_logs="${git_logs//$'\n'/$'\n'- }"
                   {
                       echo "body<<$EOF"
-                      echo "$git_logs"
+                      echo "- $git_logs"
                       echo "$EOF"
                   } >>"$GITHUB_OUTPUT"
               shell: bash
