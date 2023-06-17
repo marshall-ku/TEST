@@ -30,9 +30,11 @@ jobs:
               shell: bash
             - name: Generate body
               run: |
+                  git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
+                  git_logs="${git_logs//$'\n'/$'\n'- }"
                   EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
                   echo "RELEASE_BODY<<$EOF" >> "$GITHUB_ENV"
-                  echo "body=$git_logs" >> "$GITHUB_ENV"
+                  echo "$git_logs" >> "$GITHUB_ENV"
                   echo "$EOF" >> "$GITHUB_ENV"
               shell: bash
             - name: Create Release
