@@ -35,7 +35,7 @@ jobs:
                   git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
                   git_logs="${git_logs//$'\n'/$'\n'- }"
                   {
-                      echo "body=<<$EOF"
+                      echo "body<<$EOF"
                       echo "$git_logs"
                       echo "$EOF"
                   } >>"$GITHUB_OUTPUT"
