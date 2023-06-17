@@ -29,11 +29,12 @@ jobs:
               run: echo "version=$(echo '${{ github.event.head_commit.message }}' | grep -oP 'v(\d|\.)+')" >> $GITHUB_OUTPUT
               shell: bash
             - name: Generate body
+              id: generate-body
               run: |
                   git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
                   git_logs="${git_logs//$'\n'/$'\n'- }"
                   EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-                  echo "RELEASE_BODY<<$EOF" >> "$GITHUB_ENV"
+                  echo "body=<<$EOF" >> "$GITHUB_ENV"
                   echo "$git_logs" >> "$GITHUB_ENV"
                   echo "$EOF" >> "$GITHUB_ENV"
               shell: bash
@@ -45,7 +46,7 @@ jobs:
               with:
                   tag_name: ${{ steps.get-version.outputs.version }}
                   release_name: ${{ steps.get-version.outputs.version }}
-                  body: ${{ github.env.RELEASE_BODY }}
+                  body: ${{ steps.generate-body.outputs.body }}
                   draft: false
                   prerelease: false
     trigger-deploy:
