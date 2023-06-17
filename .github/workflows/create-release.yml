@@ -31,12 +31,14 @@ jobs:
             - name: Generate body
               id: generate-body
               run: |
+                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
                   git_logs=$(git log "$(git describe --tags --abbrev=0)"..HEAD --oneline)
                   git_logs="${git_logs//$'\n'/$'\n'- }"
-                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-                  echo "body=<<$EOF" >> "$GITHUB_OUTPUT"
-                  echo "$git_logs" >> "$GITHUB_OUTPUT"
-                  echo "$EOF" >> "$GITHUB_OUTPUT"
+                  {
+                      echo "body=$EOF"
+                      echo "$git_logs"
+                      echo "$EOF"
+                  } >>"$GITHUB_OUTPUT"
               shell: bash
             - name: Create Release
               id: create_release
