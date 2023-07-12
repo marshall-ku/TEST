@@ -1,0 +1,20 @@
+name: Send slack notification
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        description: "Message to send"
+        required: true
+        type: string
+    secrets:
+      url:
+        required: true
+
+jobs:
+  run:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification
+        run: curl -X POST -H "Content-Type:application/json" -d "{\"text\":\"${{ inputs.message }}\"}" ${{ secrets.url }}
