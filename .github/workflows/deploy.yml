@@ -20,3 +20,9 @@ jobs:
                   name: dist
                   path: dist/
             - run: cat dist/tmp.md
+    send-notification:
+        uses: marshall-ku/TEST/.github/workflows/reusable.yml@master
+        with:
+            message: "test message"
+        secrets:
+            url: ${{ secrets.SLACK_WEBHOOK_URL }}
