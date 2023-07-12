@@ -9,6 +9,7 @@ on:
         type: string
     secrets:
       url:
+        description: "Slack webhook url"
         required: true
 
 jobs:
