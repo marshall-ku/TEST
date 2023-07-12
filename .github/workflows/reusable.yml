@@ -19,8 +19,7 @@ jobs:
     steps:
       - name: Make curl request
         run: |
-          json_payload=$(
-            cat <<EOF
+          json_payload=$(cat <<EOF
             {
               "attachments": [
                   {
@@ -41,6 +40,5 @@ jobs:
                   }
               ]
             }
-            EOF
-          )
+            EOF)
           curl -X POST -H "Content-Type:application/json" -d "$json_payload" ${{ secrets.url }}
