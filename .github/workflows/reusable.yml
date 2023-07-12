@@ -19,26 +19,27 @@ jobs:
     steps:
       - name: Make curl request
         run: |
-          json_payload=$(cat <<EOF
-            {
-              "attachments": [
-                  {
-                      "color": "#2eb886",
-                      "author_name": "github",
-                      "author_link": "https://github.com/marshallku",
-                      "author_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                      "title": "Title of attachment",
-                      "title_link": "https://api.slack.com/",
-                      "text": "${{ inputs.message }}",
-                      "fields": [
-                          {
-                              "title": "필드",
-                              "value": "value",
-                              "short": false
-                          }
-                      ]
-                  }
-              ]
-            }
-            EOF)
+          json_payload=$(cat << EOF
+          {
+            "attachments": [
+                {
+                    "color": "#2eb886",
+                    "author_name": "github",
+                    "author_link": "https://github.com/marshallku",
+                    "author_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                    "title": "Title of attachment",
+                    "title_link": "https://api.slack.com/",
+                    "text": "${{ inputs.message }}",
+                    "fields": [
+                        {
+                            "title": "필드",
+                            "value": "value",
+                            "short": false
+                        }
+                    ]
+                }
+            ]
+          }
+          EOF
+          )
           curl -X POST -H "Content-Type:application/json" -d "$json_payload" ${{ secrets.url }}
