@@ -14,8 +14,8 @@ on:
 
 jobs:
   run:
-    name: Build
+    name: Send notification
     runs-on: ubuntu-latest
     steps:
-      - name: Send notification
+      - name: Make curl request
         run: curl -X POST -H "Content-Type:application/json" -d "{\"text\":\"${{ inputs.message }}\"}" ${{ secrets.url }}
