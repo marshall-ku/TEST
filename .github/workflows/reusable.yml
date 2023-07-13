@@ -7,19 +7,9 @@ on:
         description: "Status of job"
         required: true
         type: boolean
-      title:
-        description: "Title of attachment"
-        required: false
-        default: "Failed to run job"
-        type: string
       message:
         description: "Message to send"
         required: true
-        type: string
-      author:
-        description: "Author of attachment"
-        required: false
-        default: "Github Actions"
         type: string
     secrets:
       url:
@@ -33,21 +23,26 @@ jobs:
     steps:
       - name: Make curl request
         run: |
+          status=$([ "${{ inputs.status }}" == 'true' ] && echo 'succeeded' || echo 'failed')
           color=$([ "${{ inputs.status }}" == 'true' ] && echo '#66bb6a' || echo '#f44336')
           json_payload=$(cat << EOF
           {
             "attachments": [
                 {
                     "color": "$color",
-                    "author_name": "${{ inputs.author }}",
-                    "author_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                    "title": "${{ inputs.title }}",
-                    "title_link": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "author_name": "${{ github.actor }}",
+                    "author_icon": "https://github.com/${{ github.actor }}.png",
+                    "title": "Workflow <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.action }}> $status",
                     "text": "${{ inputs.message }}",
                     "fields": [
                         {
-                            "title": "필드",
-                            "value": "value",
+                            "title": "Ref",
+                            "value": "<https://example.com|${{ github.ref }}>",
+                            "short": false
+                        },
+                        {
+                            "title": "Message",
+                            "value": "${{ inputs.message }}",
                             "short": false
                         }
                     ]
