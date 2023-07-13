@@ -27,6 +27,5 @@ jobs:
         uses: marshall-ku/TEST/.github/workflows/reusable.yml@master
         with:
             status: ${{ contains(join(needs.*.result, ','), 'failure') }}
-            message: "test message"
         secrets:
             url: ${{ secrets.SLACK_WEBHOOK_URL }}
