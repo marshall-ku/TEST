@@ -3,9 +3,28 @@ name: Send slack notification
 on:
   workflow_call:
     inputs:
+      id:
+        description: "ID of github job"
+        required: true
+        type: string
+      title:
+        description: "Title of attachment"
+        required: false
+        default: "Failed to run job"
+        type: string
       message:
         description: "Message to send"
         required: true
+        type: string
+      color:
+        description: "Color of attachment"
+        required: false
+        default: "#808080"
+        type: string
+      author:
+        description: "Author of attachment"
+        required: false
+        default: "Github Actions"
         type: string
     secrets:
       url:
@@ -23,12 +42,11 @@ jobs:
           {
             "attachments": [
                 {
-                    "color": "#2eb886",
-                    "author_name": "github",
-                    "author_link": "https://github.com/marshallku",
+                    "color": "${{ inputs.color }}",
+                    "author_name": "${{ inputs.author }}",
                     "author_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                    "title": "Title of attachment",
-                    "title_link": "https://api.slack.com/",
+                    "title": "${{ inputs.author }}",
+                    "title_link": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "text": "${{ inputs.message }}",
                     "fields": [
                         {
