@@ -32,13 +32,18 @@ jobs:
                     "color": "$color",
                     "author_name": "${{ github.actor }}",
                     "author_icon": "https://github.com/${{ github.actor }}.png",
-                    "title": "Workflow <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.action }}> $status",
+                    "title": "Workflow <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}> $status",
                     "text": "${{ inputs.message }}",
                     "fields": [
                         {
                             "title": "Ref",
-                            "value": "<https://example.com|${{ github.ref }}>",
-                            "short": false
+                            "value": "${{ github.ref_name }}",
+                            "short": true
+                        },
+                        {
+                            "title": "Event",
+                            "value": "${{ github.event_name }}",
+                            "short": true
                         },
                         {
                             "title": "Message",
