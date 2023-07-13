@@ -9,8 +9,9 @@ on:
         type: boolean
       message:
         description: "Message to send"
-        required: true
+        required: false
         type: string
+        default: ''
     secrets:
       url:
         description: "Slack webhook url"
