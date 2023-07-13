@@ -21,7 +21,7 @@ jobs:
             - name: 'echo 4'
               run: echo '4'
             - name: 'exit'
-              run: exit 1
+              run: cd tmp && cat test.md
     send-notification:
         needs: [test]
         if: ${{ always() }}
