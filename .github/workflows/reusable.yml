@@ -11,7 +11,7 @@ on:
         description: "Message to send"
         required: false
         type: string
-        default: ''
+        default: ' '
     secrets:
       url:
         description: "Slack webhook url"
