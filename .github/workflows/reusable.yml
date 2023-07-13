@@ -41,7 +41,7 @@ jobs:
                     "color": "${{ inputs.color }}",
                     "author_name": "${{ inputs.author }}",
                     "author_icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                    "title": "${{ inputs.author }}",
+                    "title": "${{ inputs.title }}",
                     "title_link": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "text": "${{ inputs.message }}",
                     "fields": [
