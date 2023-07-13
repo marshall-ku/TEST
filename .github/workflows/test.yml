@@ -1,0 +1,33 @@
+name: Build test
+
+on:
+    push:
+        branches:
+            - master
+    workflow_dispatch:
+
+jobs:
+    test:
+        name: Cache test
+        runs-on: ubuntu-latest
+        needs: ["build-test"]
+        steps:
+            - name: 'echo 1'
+              run: echo '1'
+            - name: 'echo 2'
+              run: echo '2'
+            - name: 'echo 3'
+              run: echo '3'
+            - name: 'echo 4'
+              run: echo '4'
+            - name: 'exit'
+              run: exit 1
+    send-notification:
+        needs: [test]
+        if: ${{ always() }}
+        uses: marshall-ku/TEST/.github/workflows/reusable.yml@master
+        with:
+            status: ${{ contains(join(needs.*.result, ','), 'failure') }}
+            message: "test message"
+        secrets:
+            url: ${{ secrets.SLACK_WEBHOOK_URL }}
