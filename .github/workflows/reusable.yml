@@ -6,7 +6,7 @@ on:
       status:
         description: "Status of job"
         required: true
-        type: string
+        type: boolean
       title:
         description: "Title of attachment"
         required: false
@@ -33,9 +33,9 @@ jobs:
     steps:
       - name: Make curl request
         run: |
+          color=$([ "${{ inputs.status }}" == 'true' ] && echo '#66bb6a' || echo '#f44336')
           json_payload=$(cat << EOF
           {
-            color=$([ "${{ inputs.status }}" == 'true' ] && echo '#66bb6a' || echo '#f44336')
             "attachments": [
                 {
                     "color": "$color",
