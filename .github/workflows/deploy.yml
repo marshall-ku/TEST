@@ -22,7 +22,7 @@ jobs:
             - run: cat dist/tmp.md
     send-notification:
         needs: [build-test, cache-test]
-        if: ${{ always() }}
+        if: ${{ failure() }}
         uses: marshall-ku/TEST/.github/workflows/reusable.yml@master
         with:
             status: ${{ contains(join(needs.*.result, ','), 'failure') }}
