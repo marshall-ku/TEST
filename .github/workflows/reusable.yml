@@ -23,39 +23,5 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Make curl request
-              env:
-                  WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URI }}
               run: |
-                  status=$([ "${{ inputs.status }}" == 'true' ] && echo 'failed' || echo 'succeeded')
-                  color=$([ "${{ inputs.status }}" == 'true' ] && echo '16007990' || echo '5763719')
-                  json_payload=$(cat << EOF
-                  {
-                      "embeds": [
-                            {
-                                "type": "rich",
-                                "title": "Workflow $status",
-                                "description": "${{ inputs.message }}",
-                                "color": "$color",
-                                "fields": [
-                                    {
-                                    "name": "Ref",
-                                    "value": "${{ github.ref }}"
-                                    },
-                                    {
-                                    "name": "URL",
-                                    "value": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                                    },
-                                    {
-                                    "name": "Event",
-                                    "value": "${{ github.event_name }}"
-                                    }
-                                ],
-                                "footer": {
-                                    "text": "${{ github.actor }}"
-                                }
-                            }
-                      ]
-                  }
-                  EOF
-                  )
-                  curl -H "Content-Type:application/json" -d "$json_payload" "$WEBHOOK_URL"
+                    echo ${{ secrets.DISCORD_WEBHOOK_URI }}
