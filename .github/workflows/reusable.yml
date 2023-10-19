@@ -56,4 +56,4 @@ jobs:
                   }
                   EOF
                   )
-                  curl -H "Content-Type:application/json" -d "$json_payload" "https://discord.com/api/webhooks/1164573510593679370/N8HBPxXwanKWO8kfxef7K2533W60UQBpU-rlK_dYLIcXwdQa0t1-aB0GIp_plNyCSnQl"
+                  curl -H "Content-Type:application/json" -d "$json_payload" "${{ secrets.DISCORD_WEBHOOK_URI }}"
