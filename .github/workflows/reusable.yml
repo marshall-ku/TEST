@@ -58,5 +58,5 @@ jobs:
                   }
                   EOF
                   )
-                  curl -H "Content-Type:application/json" -d "$json_payload" ${{ secrets.DISCORD_WEBHOOK_URI }}
+                  curl -H "Content-Type:application/json" -d "$json_payload" ${{ secrets.url }}
 
