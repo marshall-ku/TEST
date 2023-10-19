@@ -28,4 +28,4 @@ jobs:
         with:
             status: ${{ contains(join(needs.*.result, ','), 'failure') }}
         secrets:
-            url: ${{ secrets.SLACK_WEBHOOK_URL }}
+            url: ${{ secrets.DISCORD_WEBHOOK_URI }}
