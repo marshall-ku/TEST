@@ -19,13 +19,32 @@ jobs:
               run: echo '3'
             - name: 'echo 4'
               run: echo '4'
-            - name: 'exit'
+    test2:
+        name: Test2
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'will success'
+              run: echo '1'
+            - name: 'will fail'
               run: cd tmp && cat test.md
+    test3:
+        name: Test3
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'will success'
+              run: echo '1'
     send-notification:
-        needs: [test]
+        needs: [test, test2, test3]
         if: ${{ failure() }}
         uses: marshall-ku/TEST/.github/workflows/reusable.yml@master
         with:
             status: ${{ contains(join(needs.*.result, ','), 'failure') }}
         secrets:
             url: ${{ secrets.DISCORD_WEBHOOK_URI }}
+    check-status:
+        needs: [test, test2, test3]
+        runs-on: ubuntu-latest
+        if: ${{ failure() }}
+        steps:
+            - run: echo ${{ contains(join(needs.*.result, ',') }}
+            - run: echo ${{ needs }}
